@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<div class="container">
+
+	<div id="results">
+		<b>Line</b>: {{line}}
+		<b>Fare zones</b>: {{zones}}<br>
+
+	</div>
+</div>
+<canvas id="buyers" width="600" height="400"></canvas>
+		<script>
+	    var buyerData = {
+				labels : {{zones}},
+				datasets : [
+					{
+						fillColor : "rgba(172,194,132,0.4)",
+						strokeColor : "#ACC26D",
+						data : {{fare}}
+					},
+					{
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,0.5)",
+						data : {{cost}}
+					}
+				]
+			}
+	    var buyers = document.getElementById('buyers').getContext('2d');
+	    new Chart(buyers).Bar(buyerData);
+
+  </script>
+
+  Farezones
+ 
+{% endblock %}

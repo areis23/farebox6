@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="container">
+    <form action="/chart" method="post">
+      <div name="form_field">
+        <label for="line">Line:</label>
+          <div class="container">
+    		<select name="line" size="5">
+	          <option>1</option>
+	          <option>78</option>
+	          <option>111</option>
+	          <option>319</option>
+	        </select>
+      	</div>
+      <input type="submit" id="submit" value="calculate" />
+    </form>
+  </div>
+
+{% endblock %}
