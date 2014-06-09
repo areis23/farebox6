@@ -11,9 +11,9 @@
 
 	</div>
 </div>
-<canvas id="buyers" width="600" height="400"></canvas>
+<canvas id="farecost" width="600" height="550"></canvas>
 		<script>
-	    var buyerData = {
+	    var farecostData = {
 				labels : {{zones}},
 				datasets : [
 					{
@@ -28,11 +28,37 @@
 					}
 				]
 			}
-	    var buyers = document.getElementById('buyers').getContext('2d');
-	    new Chart(buyers).Bar(buyerData);
+	    var farecost = document.getElementById('farecost').getContext('2d');
+	    new Chart(farecost).Bar(farecostData, {
+	    	scaleOverride : true,
+			scaleSteps : 35,
+			scaleStepWidth : 200,
+			scaleStartValue : 0
+	    });
+</script>
+Farezones
+<canvas id="recovery" width="600" height="550"></canvas>
+		<script>
+	    var recoveryData = {
+				labels : {{zones}},
+				datasets : [
+					{
+						fillColor : "rgba(172,1,132,0.4)",
+						strokeColor : "#ACC26D",
+						data : {{recovery}}
+					}
 
+				]
+			}
+	    var recovery = document.getElementById('recovery').getContext('2d');
+	    new Chart(recovery).Bar(recoveryData, {
+			scaleOverride : true,
+			scaleSteps : 36,
+			scaleStepWidth : 5,
+			scaleStartValue : 0,
+			barValueSpacing : 50
+		});
   </script>
-
-  Farezones
- 
+Farezones
+  
 {% endblock %}

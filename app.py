@@ -19,18 +19,22 @@ def chart():
 	zones = range(length)
 	fare = range(length)
 	cost = range(length)
+	recovery = range(length)
 	i = 0
 	while (i < length):
 		zones[i] = z[i]
 		fare[i] = f[i]
 		cost[i] = c[i]
+		recovery[i] = int((fare[i] / cost[i]) * 100)
 		i += 1
+	
 
 	return render_template('chart.html',
 		line= line,
 		zones= zones,
 		fare = fare,
-		cost = cost
+		cost = cost,
+		recovery = recovery
 		)
 
 if __name__ == '__main__':
