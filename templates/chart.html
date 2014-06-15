@@ -7,8 +7,8 @@
 
 	<div id="results">
 		<b>Line</b>: {{line}}
+		<b>Direction</b>: {{direction}}
 		<b>Fare zones</b>: {{zones}}<br>
-
 	</div>
 </div>
 <canvas id="farecost" width="600" height="550"></canvas>
@@ -30,10 +30,10 @@
 			}
 	    var farecost = document.getElementById('farecost').getContext('2d');
 	    new Chart(farecost).Bar(farecostData, {
-	    	scaleOverride : true,
-			scaleSteps : 35,
-			scaleStepWidth : 200,
-			scaleStartValue : 0
+	    	//scaleOverride : true,
+			//scaleSteps : 45,
+			//scaleStepWidth : 500,
+			//scaleStartValue : 0
 	    });
 </script>
 Farezones

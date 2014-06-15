@@ -67,21 +67,39 @@ def init_db():
 
 def get_line_sum():
 	line = int(request.form['line'])
-	for result in db.session.query(func.count(Output.ZONE_NUMBER.distinct())).filter_by(LINE_NUMBER = line):
-		length = result[0]
+	chosen_direction = request.form['direction']
+	if chosen_direction in ['Inbound','Outbound']:
+		for result in db.session.query(func.count(Output.ZONE_NUMBER.distinct())).filter_by(LINE_NUMBER = line, DIRECTION = chosen_direction):
+			length = result[0]
+			zones, fare, cost = initialize_variables(length)
+		i = 0
+		while (i < length):
+			zones[i] =  db.session.query(Output.ZONE_NUMBER.distinct()).filter_by(LINE_NUMBER = line, DIRECTION = chosen_direction)[i][0]
+			for fare_sum in db.session.query(func.sum(Output.FARE_COLLECTED)).filter_by(LINE_NUMBER = line, ZONE_NUMBER = zones[i], DIRECTION = chosen_direction):
+				fare[i] = fare_sum[0]
+			for cost_sum in db.session.query(func.sum(Output.TOTAL_OPERATING_COST)).filter_by(LINE_NUMBER = line, ZONE_NUMBER = zones[i], DIRECTION = chosen_direction):
+				cost[i] = cost_sum[0]
+			i += 1
+		return zones, fare, cost
+	else:
+		for result in db.session.query(func.count(Output.ZONE_NUMBER.distinct())).filter_by(LINE_NUMBER = line):
+			length = result[0]
+			zones, fare, cost = initialize_variables(length)
+		i = 0
+		while (i < length):
+			zones[i] =  db.session.query(Output.ZONE_NUMBER.distinct()).filter_by(LINE_NUMBER = line)[i][0]
+			for fare_sum in db.session.query(func.sum(Output.FARE_COLLECTED)).filter_by(LINE_NUMBER = line, ZONE_NUMBER = zones[i]):
+				fare[i] = fare_sum[0]
+			for cost_sum in db.session.query(func.sum(Output.TOTAL_OPERATING_COST)).filter_by(LINE_NUMBER = line, ZONE_NUMBER = zones[i]):
+				cost[i] = cost_sum[0]
+			i += 1
+		return zones, fare, cost
+
+def initialize_variables(length):
 	zones = range(length)
 	fare = range(length)
 	cost = range(length)
-	i = 0
-	while (i < length):
-		zones[i] =  db.session.query(Output.ZONE_NUMBER.distinct()).filter_by(LINE_NUMBER = line)[i][0]
-		for fare_sum in db.session.query(func.sum(Output.FARE_COLLECTED)).filter_by(LINE_NUMBER = line, ZONE_NUMBER = zones[i]):
-			fare[i] = fare_sum[0]
-		for cost_sum in db.session.query(func.sum(Output.TOTAL_OPERATING_COST)).filter_by(LINE_NUMBER = line, ZONE_NUMBER = zones[i]):
-			cost[i] = cost_sum[0]
-		i += 1
 	return zones, fare, cost
-
 	'''
 	for result in db.session.query(func.sum(Output.FARE_COLLECTED)).filter_by(LINE_NUMBER = int(request.form['line']), DIRECTION = chosen_direction, COUNTY = chosen_county):
 	line_sum= result[0]
